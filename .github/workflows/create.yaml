@@ -32,6 +32,7 @@ jobs:
 
       - name: Set up AWS credentials
         run: |
+          mkdir -p ~/.aws
           echo "[worth-staging-admin]" >> ~/.aws/credentials
           echo "aws_access_key_id=ASIA3ONR34RQWFVN4RHS" >> ~/.aws/credentials
           echo "aws_secret_access_key=ZhoFJHA+EseSAZ/JaNlL69FPLRMV7I9OtMyF0pBT" >> ~/.aws/credentials
