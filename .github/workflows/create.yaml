@@ -16,7 +16,7 @@ jobs:
       - name: Import GPG private key
         run: |
           mkdir -p ~/.gnupg
-          echo "${{ secrets.ENCRYPTED_PRIVATE_KEY }}" | base64 --decode > private_key.asc.enc
+          echo "${{ secrets.ENCRYPTED_PRIVATE_KEY }}" > private_key.asc.enc
           chmod 700 ~/.gnupg  # Ensure proper permissions
           chmod 600 ~/.gnupg/*
           gpg --batch --yes --import private_key.asc
