@@ -48,4 +48,4 @@ jobs:
 
       - name: Terraform Plan
         run: |
-          terraform plan -var-file="variables.tfvars" -var-file="secrets.tfvars" -auto-approve
+          terraform plan -var-file="variables.tfvars" -var-file="secrets.tfvars"
