@@ -7,8 +7,27 @@ jobs:
   terraform_apply:
     runs-on: ubuntu-latest
     steps:
+      - name: Install GPG
+        run: sudo apt-get update && sudo apt-get install gnupg -y
+
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Import GPG private key
+        run: |
+          mkdir -p ~/.gnupg
+          echo "${{ secrets.YOUR_ENCRYPTED_PRIVATE_KEY }}" | base64 --decode > private_key.asc.enc
+          gpg --decrypt --output private_key.asc --yes private_key.asc.enc
+
+      - name: Use decrypted private key
+        run: gpg --import private_key.asc
+
+      - name: Decrypt GPG-encrypted File
+        run: |
+          if ! gpg --decrypt --output secrets.tfvars secrets.tfvars.gpg; then
+            echo "Failed to decrypt the file."
+            exit 1
+          fi
 
       - name: Set up AWS credentials
         run: |
@@ -25,6 +44,6 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Terraform Apply
+      - name: Terraform Plan
         run: |
-          terraform apply -var-file="variables.tfvars" -var-file="secrets.tfvars" -auto-approve
+          terraform plan -var-file="variables.tfvars" -var-file="secrets.tfvars" -auto-approve
