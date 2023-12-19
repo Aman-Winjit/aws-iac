@@ -43,8 +43,8 @@ jobs:
           terraform_version: 1.6.5
 
       - name: Terraform Init
-        run: terraform init
+        run: make init
 
       - name: Terraform Plan
         run: |
-          terraform plan -var-file="variables.tfvars" -var-file="secrets.tfvars"
+          make plan
