@@ -1,11 +1,8 @@
 init:
-    terraform init
-
+	terraform init
 plan:
-    terraform plan -var-file="variables.tfvars" -var-file="secrets.tfvars"
-
+	terraform plan -var-file="variables.tfvars" -var-file="secrets.tfvars"
 apply:
-    terraform apply -var-file="variables.tfvars" -var-file="secrets.tfvars" -auto-approve
-
+	terraform apply -var-file="variables.tfvars" -var-file="secrets.tfvars" -auto-approve
 destroy:
-    terraform destroy -var-file="variables.tfvars" -var-file="secrets.tfvars" -auto-approve
+	terraform destroy -var-file="variables.tfvars" -var-file="secrets.tfvars" -auto-approve
