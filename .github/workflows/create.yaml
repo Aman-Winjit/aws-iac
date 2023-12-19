@@ -49,5 +49,4 @@ jobs:
         run: make init
 
       - name: Terraform Plan
-        run: |
-          make plan
+        run: make plan
