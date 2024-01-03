@@ -24,6 +24,15 @@ jobs:
           sudo openvpn --config vpn.ovpn --daemon  # Start OpenVPN in the background
           sleep 20  # Wait for OpenVPN to connect (adjust the duration if needed)
 
+      - name: Check VPN Connection
+        run: |
+          if sudo openvpn --config vpn.ovpn --status | grep 'CONNECTED'; then
+            echo "VPN is successfully connected."
+          else
+            echo "VPN is not connected. Please check the connection."
+            exit 1
+          fi
+
       - name: Check Connectivity to Google
         run: |
           ping -c 4 google.com || true
