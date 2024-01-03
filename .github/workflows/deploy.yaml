@@ -30,14 +30,14 @@ jobs:
           aws configure set default.region us-east-1  # Change this if needed
           aws configure set default.output json
 
-      - name: Install ArgoCD CLI
-        run: |
-          wget https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64 -O /usr/local/bin/argocd
-          chmod +x /usr/local/bin/argocd
+      # - name: Install ArgoCD CLI
+      #   run: |
+      #     wget https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64 -O /usr/local/bin/argocd
+      #     chmod +x /usr/local/bin/argocd
 
-      - name: Verify ArgoCD CLI installation
-        run: |
-          argocd version
+      # - name: Verify ArgoCD CLI installation
+      #   run: |
+      #     argocd version
 
       - name: Install kubectl CLI
         run: |
