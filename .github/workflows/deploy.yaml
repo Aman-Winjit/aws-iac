@@ -9,29 +9,17 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install OpenVPN
         run: |
-          sudo apt-get update
-          sudo apt-get install -y openvpn
+          sudo apt update
+          sudo apt install -y openvpn
 
-      - name: Set up OpenVPN
-        env:
-          OVPN_CONFIG: ${{ secrets.OVPN_CONFIG }}
-        run: |
-          echo "$OVPN_CONFIG" > vpn.ovpn  # Write the secret to a file
-          sudo openvpn --config vpn.ovpn --verb 3
-          sleep 30
-
-      - name: Check VPN Connection
-        run: |
-          if sudo openvpn --config vpn.ovpn --status | grep 'CONNECTED'; then
-            echo "VPN is successfully connected."
-          else
-            echo "VPN is not connected. Please check the connection."
-            exit 1
-          fi
+      - name: Connect to VPN
+        uses: kota65535/github-openvpn-connect-action@v2
+        with:
+          config_file: .github/workflows/client.ovpn
 
       - name: Check Connectivity to Google
         run: |
