@@ -23,6 +23,13 @@ jobs:
           echo "$OVPN_CONFIG" > vpn.ovpn  # Write the secret to a file
           sudo openvpn --config vpn.ovpn &  # Start OpenVPN in the background
 
+      - name: Install ping
+        run: sudo apt-get update && sudo apt-get install -y iputils-ping
+
+      - name: Check Connectivity to Google
+        run: |
+          ping -c 4 google.com
+
       - name: Install AWS CLI
         run: |
           sudo apt-get update
