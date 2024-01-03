@@ -31,29 +31,22 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y awscli
 
+      - name: Install kubectl CLI
+        run: |
+          sudo apt-get update && sudo apt-get install -y kubectl
+
+      - name: Setup ArgoCD CLI
+        uses: imajeetyadav/argocd-cli@v1
+
+      - name: Check ArgoCD CLI
+        run: argocd version
+
       - name: Set up AWS credentials
         run: |
           mkdir -p ~/.aws
           echo "[worth-prod-admin]" >> ~/.aws/credentials
           echo "aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
           echo "aws_secret_access_key=${{ secrets.AWS_ACCESS_KEY_SECRET }}" >> ~/.aws/credentials
-
-      # - name: Install ArgoCD CLI
-      #   run: |
-      #     wget https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64 -O /usr/local/bin/argocd
-      #     chmod +x /usr/local/bin/argocd
-
-      # - name: Verify ArgoCD CLI installation
-      #   run: |
-      #     argocd version
-
-      - name: Install kubectl CLI
-        run: |
-          sudo apt-get update && sudo apt-get install -y kubectl
-
-      - name: Verify kubectl CLI installation
-        run: |
-          kubectl version --client
 
       - name: Update kubeconfig for EKS cluster
         run: |
