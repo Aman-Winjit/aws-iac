@@ -26,11 +26,7 @@ jobs:
 
       - name: Check Connectivity to Google
         run: |
-          ping -c 4 google.com || true  # Use '|| true' to prevent failure due to ping not receiving responses
-
-      - name: Check Connectivity to Google
-        run: |
-          ping -c 4 google.com
+          ping -c 4 google.com || true
 
       - name: Install AWS CLI
         run: |
