@@ -21,10 +21,11 @@ jobs:
         with:
           config_file: .github/workflows/client.ovpn
 
-      - name: Check Connectivity to Google
+      - name: Verify VPN Connection
         run: |
-          ping -c 4 google.com || true
-
+          curl ifconfig.me
+          cat /etc/resolv.conf
+          
       - name: Install AWS CLI
         run: |
           sudo apt-get update
