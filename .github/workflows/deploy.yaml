@@ -28,12 +28,19 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y awscli
 
-      - name: Configure AWS credentials
+      # - name: Configure AWS credentials
+      #   run: |
+      #     aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws configure set aws_secret_access_key ${{ secrets.AWS_ACCESS_KEY_SECRET }}
+      #     aws configure set default.region us-east-1  # Change this if needed
+      #     aws configure set default.output json
+
+      - name: Set up AWS credentials
         run: |
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ secrets.AWS_ACCESS_KEY_SECRET }}
-          aws configure set default.region us-east-1  # Change this if needed
-          aws configure set default.output json
+          mkdir -p ~/.aws
+          echo "[worth-prod-admin]" >> ~/.aws/credentials
+          echo "aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_secret_access_key=${{ secrets.AWS_ACCESS_KEY_SECRET }}" >> ~/.aws/credentials
 
       # - name: Install ArgoCD CLI
       #   run: |
@@ -54,7 +61,7 @@ jobs:
 
       - name: Update kubeconfig for EKS cluster
         run: |
-          aws eks update-kubeconfig --region us-east-1 --name worthai-prod-ekscluster
+          aws eks update-kubeconfig --region us-east-1 --name worthai-prod-ekscluster --profile worth-prod-admin
 
       - name: Create namespace for ArgoCD
         run: |
