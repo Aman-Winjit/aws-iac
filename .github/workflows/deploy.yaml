@@ -1,0 +1,59 @@
+name: VPN and Update Kubeconfig for EKS Cluster
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  connect-vpn-and-update-kubeconfig:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up OpenVPN
+        env:
+          OVPN_CONFIG: ${{ secrets.OVPN_CONFIG }}
+        run: |
+          echo "$OVPN_CONFIG" > vpn.ovpn  # Write the secret to a file
+          sudo openvpn --config vpn.ovpn &  # Start OpenVPN in the background
+
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y awscli
+
+      - name: Configure AWS credentials
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_ACCESS_KEY_SECRET }}
+          aws configure set default.region us-east-1  # Change this if needed
+          aws configure set default.output json
+
+      - name: Install ArgoCD CLI
+        run: |
+          wget https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64 -O /usr/local/bin/argocd
+          chmod +x /usr/local/bin/argocd
+
+      - name: Verify ArgoCD CLI installation
+        run: |
+          argocd version
+
+      - name: Install kubectl CLI
+        run: |
+          sudo apt-get update && sudo apt-get install -y kubectl
+
+      - name: Verify kubectl CLI installation
+        run: |
+          kubectl version --client
+
+      - name: Update kubeconfig for EKS cluster
+        run: |
+          aws eks update-kubeconfig --region us-east-1 --name worthai-prod-ekscluster
+
+      - name: Create namespace for ArgoCD
+        run: |
+          kubectl create namespace argocd
+          kubectl create namespace services
