@@ -1,9 +1,7 @@
 name: VPN and Update Kubeconfig for EKS Cluster
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   connect-vpn-and-update-kubeconfig:
