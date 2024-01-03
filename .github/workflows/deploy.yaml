@@ -21,10 +21,12 @@ jobs:
           OVPN_CONFIG: ${{ secrets.OVPN_CONFIG }}
         run: |
           echo "$OVPN_CONFIG" > vpn.ovpn  # Write the secret to a file
-          sudo openvpn --config vpn.ovpn &  # Start OpenVPN in the background
+          sudo openvpn --config vpn.ovpn --daemon  # Start OpenVPN in the background
+          sleep 20  # Wait for OpenVPN to connect (adjust the duration if needed)
 
-      - name: Install ping
-        run: sudo apt-get update && sudo apt-get install -y iputils-ping
+      - name: Check Connectivity to Google
+        run: |
+          ping -c 4 google.com || true  # Use '|| true' to prevent failure due to ping not receiving responses
 
       - name: Check Connectivity to Google
         run: |
@@ -34,13 +36,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y awscli
-
-      # - name: Configure AWS credentials
-      #   run: |
-      #     aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws configure set aws_secret_access_key ${{ secrets.AWS_ACCESS_KEY_SECRET }}
-      #     aws configure set default.region us-east-1  # Change this if needed
-      #     aws configure set default.output json
 
       - name: Set up AWS credentials
         run: |
