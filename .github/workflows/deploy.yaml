@@ -35,11 +35,11 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y kubectl
 
-      - name: Setup ArgoCD CLI
-        uses: imajeetyadav/argocd-cli@v1
+      # - name: Setup ArgoCD CLI
+      #   uses: imajeetyadav/argocd-cli@v1
 
-      - name: Check ArgoCD CLI
-        run: argocd version
+      # - name: Check ArgoCD CLI
+      #   run: argocd version
 
       - name: Set up AWS credentials
         run: |
