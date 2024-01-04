@@ -54,11 +54,11 @@ jobs:
 
       - name: AWS configure
         run: |
-          aws configure list --profile worth-prod-admin
+          aws configure list --region us-east-1 --profile worth-prod-admin
           
       - name: List s3 bucket
         run: |
-          aws s3 ls --profile worth-prod-admin --debug
+          aws s3 ls --region us-east-1 --profile worth-prod-admin
           
       - name: Create namespace for ArgoCD
         run: |
